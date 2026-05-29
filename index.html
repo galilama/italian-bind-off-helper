@@ -102,10 +102,92 @@
       margin-top: 10px;
       opacity: 0.7;
     }
+        .instructions-button {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      width: 44px;
+      height: 44px;
+      border: 3px solid #111;
+      background: #ffffff;
+      color: #111;
+      font-size: 1.5rem;
+      font-weight: 900;
+      cursor: pointer;
+      z-index: 10;
+      box-shadow: 4px 4px 0 #111;
+    }
+
+    .instructions-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 20;
+    }
+
+    .instructions-overlay.show {
+      display: flex;
+    }
+
+    .instructions-panel {
+      position: relative;
+      width: min(90vw, 420px);
+      background: #fffaf4;
+      border: 4px solid #111;
+      box-shadow: 8px 8px 0 #111;
+      padding: 24px;
+      text-align: left;
+      line-height: 1.5;
+    }
+
+    .instructions-panel h2 {
+      margin-top: 0;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      border: 3px solid #111;
+      background: #f3a6a6;
+      color: #111;
+      font-size: 1.2rem;
+      font-weight: 900;
+      cursor: pointer;
+    }
   </style>
 </head>
 
 <body>
+
+  <button class="instructions-button" onclick="openInstructions()">?</button>
+
+  <div class="instructions-overlay" id="instructionsOverlay">
+    <div class="instructions-panel">
+      <button class="close-button" onclick="closeInstructions()">×</button>
+
+      <h2>How to use</h2>
+
+      <p>
+        Press Enter to move through the Italian bind-off loop.
+        The blue text shows the action you are currently doing.
+      </p>
+
+      <p>
+        Loop order:
+        <strong>Knit Off → Purl On → Purl Off → Knit On</strong>
+      </p>
+
+      <p>
+        Use Right/Down arrows to go forward, and Left/Up arrows to go backward.
+      </p>
+    </div>
+  </div>
+  
   <main class="app">
     <div class="bindoff-box">
       <div class="pointer" id="pointer"></div>
@@ -222,6 +304,23 @@
 
       if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
         moveBack();
+      }
+    });
+
+
+    const instructionsOverlay = document.getElementById("instructionsOverlay");
+
+    function openInstructions() {
+      instructionsOverlay.classList.add("show");
+    }
+
+    function closeInstructions() {
+      instructionsOverlay.classList.remove("show");
+    }
+
+    instructionsOverlay.addEventListener("click", function(event) {
+      if (event.target === instructionsOverlay) {
+        closeInstructions();
       }
     });
 
