@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Italian Bind-Off Helper</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #d8aa97;
+      font-family: Arial, Helvetica, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #111;
+    }
+
+    .app {
+      width: min(92vw, 760px);
+      text-align: center;
+    }
+
+    .bindoff-box {
+      position: relative;
+      display: grid;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      min-height: 82px;
+      padding: 12px 24px;
+      border: 2px solid rgba(0, 0, 0, 0.08);
+      font-size: clamp(1.5rem, 5vw, 3.1rem);
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .knit-row {
+      background: #f7f7f7;
+    }
+
+    .purl-row {
+      background: #c9efd8;
+    }
+
+    .label {
+      color: #111;
+    }
+
+    .step {
+      color: #111;
+    }
+
+    .step.active {
+      color: #001eff;
+    }
+
+    .slash {
+      color: #111;
+    }
+
+    .pointer {
+      position: absolute;
+      left: -54px;
+      width: 0;
+      height: 0;
+      border-top: 22px solid transparent;
+      border-bottom: 22px solid transparent;
+      border-left: 34px solid #4b3cff;
+      transform: translateY(-50%);
+      display: none;
+    }
+
+    .pointer.show {
+      display: block;
+    }
+
+    .hint {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      opacity: 0.85;
+      background: rgba(255, 255, 255, 0.35);
+      display: inline-block;
+      padding: 10px 14px;
+    }
+
+    .tiny {
+      font-size: 0.8rem;
+      margin-top: 10px;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app">
+    <div class="bindoff-box">
+      <div class="pointer" id="pointer"></div>
+
+      <div class="row knit-row" id="knitRow">
+        <span class="label">Knits:</span>
+        <span class="step" id="knitOff">Knit Off</span>
+        <span class="slash">/</span>
+        <span class="step" id="purlOn">Purl On</span>
+      </div>
+
+      <div class="row purl-row" id="purlRow">
+        <span class="label">Purls:</span>
+        <span class="step" id="purlOff">Purl Off</span>
+        <span class="slash">/</span>
+        <span class="step" id="knitOn">Knit On</span>
+      </div>
+    </div>
+
+    <div class="hint">
+      Press <strong>Enter</strong> or <strong>→</strong> to move forward.<br>
+      Press <strong>←</strong> to move back.
+    </div>
+
+    <div class="tiny">
+      Starts with everything black. First Enter begins the loop.
+    </div>
+  </main>
+
+  <script>
+    const steps = [
+      {
+        id: "knitOff",
+        row: "knitRow"
+      },
+      {
+        id: "purlOn",
+        row: "knitRow"
+      },
+      {
+        id: "purlOff",
+        row: "purlRow"
+      },
+      {
+        id: "knitOn",
+        row: "purlRow"
+      }
+    ];
+
+    let currentStep = -1;
+
+    const pointer = document.getElementById("pointer");
+
+    function clearActiveStep() {
+      document.querySelectorAll(".step").forEach(step => {
+        step.classList.remove("active");
+      });
+
+      pointer.classList.remove("show");
+    }
+
+    function showStep() {
+      clearActiveStep();
+
+      if (currentStep === -1) {
+        return;
+      }
+
+      const activeStep = steps[currentStep];
+      const activeElement = document.getElementById(activeStep.id);
+      const activeRow = document.getElementById(activeStep.row);
+
+      activeElement.classList.add("active");
+
+      const rowTop = activeRow.offsetTop;
+      const rowMiddle = rowTop + activeRow.offsetHeight / 2;
+
+      pointer.style.top = rowMiddle + "px";
+      pointer.classList.add("show");
+    }
+
+    function moveForward() {
+      currentStep++;
+
+      if (currentStep >= steps.length) {
+        currentStep = 0;
+      }
+
+      showStep();
+    }
+
+    function moveBack() {
+      currentStep--;
+
+      if (currentStep < 0) {
+        currentStep = steps.length - 1;
+      }
+
+      showStep();
+    }
+
+    document.addEventListener("keydown", function(event) {
+      const allowedKeys = ["Enter", "ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp"];
+
+      if (!allowedKeys.includes(event.key)) {
+        return;
+      }
+
+      event.preventDefault();
+
+      if (event.key === "Enter" || event.key === "ArrowRight" || event.key === "ArrowDown") {
+        moveForward();
+      }
+
+      if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+        moveBack();
+      }
+    });
+
+    showStep();
+  </script>
+</body>
+</html>
