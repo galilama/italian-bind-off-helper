@@ -64,9 +64,13 @@
       color: #111;
     }
 
-    .step.active {
-      color: #001eff;
-    }
+     .step.active {
+  color: #ffffff;
+  background: #001eff;
+  padding: 6px 10px;
+  border: 3px solid #111;
+  box-shadow: 4px 4px 0 #111;
+}
 
     .slash {
       color: #111;
@@ -208,13 +212,13 @@
     </div>
 
     <div class="hint">
-      Press <strong>Enter</strong> or <strong>→</strong> to move forward.<br>
-      Press <strong>←</strong> to move back.
-    </div>
+  Do the highlighted step, then press <strong>Enter</strong> to mark it done.<br>
+  Press <strong>←</strong> if you need to go back.
+</div>
 
-    <div class="tiny">
-      Starts with everything black. First Enter begins the loop.
-    </div>
+<div class="tiny">
+  Enter = done / next step. Left arrow = back.
+</div>
   </main>
 
   <script>
@@ -237,7 +241,7 @@
       }
     ];
 
-    let currentStep = -1;
+    let currentStep = 0;
 
     const pointer = document.getElementById("pointer");
 
@@ -289,23 +293,28 @@
       showStep();
     }
 
-    document.addEventListener("keydown", function(event) {
-      const allowedKeys = ["Enter", "ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp"];
+document.addEventListener("keydown", function(event) {
+  const overlay = document.getElementById("instructionsOverlay");
+  const instructionsAreOpen = overlay && overlay.classList.contains("show");
 
-      if (!allowedKeys.includes(event.key)) {
-        return;
-      }
+  if (instructionsAreOpen) {
+    if (event.key === "Escape") {
+      closeInstructions();
+    }
 
-      event.preventDefault();
+    return;
+  }
 
-      if (event.key === "Enter" || event.key === "ArrowRight" || event.key === "ArrowDown") {
-        moveForward();
-      }
+  if (event.key === "Enter") {
+    event.preventDefault();
+    moveForward();
+  }
 
-      if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
-        moveBack();
-      }
-    });
+  if (event.key === "ArrowLeft") {
+    event.preventDefault();
+    moveBack();
+  }
+});
 
 
     const instructionsOverlay = document.getElementById("instructionsOverlay");
