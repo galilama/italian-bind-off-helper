@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Italian Bind-Off Helper</title>
+  <title>Knitting Toolbox</title>
 
   <style>
     * {
@@ -15,15 +15,49 @@
       min-height: 100vh;
       background: #d8aa97;
       font-family: Arial, Helvetica, sans-serif;
+      color: #111;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #111;
+      padding: 20px;
     }
 
     .app {
-      width: min(92vw, 760px);
+      width: min(94vw, 900px);
       text-align: center;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .tab-button {
+      border: 3px solid #111;
+      background: #ffffff;
+      color: #111;
+      font-size: 0.95rem;
+      font-weight: 900;
+      padding: 10px 16px;
+      cursor: pointer;
+      box-shadow: 4px 4px 0 #111;
+      text-transform: uppercase;
+    }
+
+    .tab-button.active {
+      background: #001eff;
+      color: #ffffff;
+    }
+
+    .tool {
+      display: none;
+    }
+
+    .tool.active {
+      display: block;
     }
 
     .bindoff-box {
@@ -56,24 +90,12 @@
       background: #c9efd8;
     }
 
-    .label {
-      color: #111;
-    }
-
-    .step {
-      color: #111;
-    }
-
-     .step.active {
-  color: #ffffff;
-  background: #001eff;
-  padding: 6px 10px;
-  border: 3px solid #111;
-  box-shadow: 4px 4px 0 #111;
-}
-
-    .slash {
-      color: #111;
+    .step.active {
+      color: #ffffff;
+      background: #001eff;
+      padding: 6px 10px;
+      border: 3px solid #111;
+      box-shadow: 4px 4px 0 #111;
     }
 
     .pointer {
@@ -92,26 +114,45 @@
       display: block;
     }
 
-.controls {
-  margin-bottom: 16px;
-}
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
 
-.clear-button {
-  border: 3px solid #111;
-  background: #ffffff;
-  color: #111;
-  font-size: 1rem;
-  font-weight: 900;
-  padding: 10px 18px;
-  cursor: pointer;
-  box-shadow: 4px 4px 0 #111;
-  text-transform: uppercase;
-}
+    .control-button,
+    .clear-button,
+    .counter-button,
+    .action-toggle,
+    .apply-button {
+      border: 3px solid #111;
+      background: #ffffff;
+      color: #111;
+      font-size: 1rem;
+      font-weight: 900;
+      padding: 10px 18px;
+      cursor: pointer;
+      box-shadow: 4px 4px 0 #111;
+      text-transform: uppercase;
+    }
 
-.clear-button:active {
-  transform: translate(3px, 3px);
-  box-shadow: 1px 1px 0 #111;
-}
+    .counter-button {
+      background: #ffd36e;
+      font-size: 1.2rem;
+      padding: 14px 24px;
+    }
+
+    .control-button:active,
+    .clear-button:active,
+    .counter-button:active,
+    .action-toggle:active,
+    .apply-button:active,
+    .tab-button:active {
+      transform: translate(3px, 3px);
+      box-shadow: 1px 1px 0 #111;
+    }
 
     .hint {
       font-size: 0.95rem;
@@ -120,6 +161,7 @@
       background: rgba(255, 255, 255, 0.35);
       display: inline-block;
       padding: 10px 14px;
+      margin-top: 8px;
     }
 
     .tiny {
@@ -127,7 +169,100 @@
       margin-top: 10px;
       opacity: 0.7;
     }
-        .instructions-button {
+
+    .counter-card {
+      max-width: 520px;
+      margin: 0 auto;
+      background: #fffaf4;
+      border: 4px solid #111;
+      box-shadow: 8px 8px 0 #111;
+      padding: 24px;
+    }
+
+    .counter-title {
+      font-size: 1.2rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .settings {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .field {
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    input {
+      width: 100%;
+      border: 3px solid #111;
+      padding: 10px;
+      font-size: 1rem;
+      font-weight: 800;
+      background: #ffffff;
+    }
+
+    .counter-display {
+      margin: 24px 0;
+      padding: 20px;
+      border: 3px solid #111;
+      background: #ffffff;
+    }
+
+    .current-row {
+      font-size: clamp(2.5rem, 12vw, 5rem);
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .row-label {
+      font-size: 0.9rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-top: 8px;
+      opacity: 0.75;
+    }
+
+    .repeat-row {
+      margin-top: 16px;
+      font-size: 1.3rem;
+      font-weight: 900;
+    }
+
+    .action-alert {
+      margin-top: 18px;
+      padding: 12px;
+      font-size: 1.3rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      display: none;
+      border: 3px solid #111;
+      background: #ff4b4b;
+      color: #ffffff;
+    }
+
+    .action-alert.show {
+      display: block;
+    }
+
+    .action-toggle {
+      background: #c9efd8;
+      margin-bottom: 14px;
+    }
+
+    .instructions-button {
       position: fixed;
       top: 18px;
       right: 18px;
@@ -160,17 +295,13 @@
 
     .instructions-panel {
       position: relative;
-      width: min(90vw, 420px);
+      width: min(90vw, 460px);
       background: #fffaf4;
       border: 4px solid #111;
       box-shadow: 8px 8px 0 #111;
       padding: 24px;
       text-align: left;
       line-height: 1.5;
-    }
-
-    .instructions-panel h2 {
-      margin-top: 0;
     }
 
     .close-button {
@@ -184,11 +315,84 @@
       font-weight: 900;
       cursor: pointer;
     }
+
+    @media (max-width: 600px) {
+      .row {
+        gap: 8px;
+        padding: 10px;
+        font-size: clamp(1.1rem, 8vw, 2rem);
+      }
+
+      .pointer {
+        display: none !important;
+      }
+
+      .settings {
+        grid-template-columns: 1fr;
+      }
+
+      .counter-card {
+        padding: 18px;
+      }
+    }
+
+    .setup-button {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  border: 3px solid #111;
+  background: #ffffff;
+  color: #111;
+  font-size: 0.9rem;
+  font-weight: 900;
+  padding: 10px 14px;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 4px 4px 0 #111;
+  text-transform: uppercase;
+}
+
+.setup-button:active {
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 #111;
+}
+
+.setup-summary {
+  margin-top: 10px;
+  font-size: 1rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.counter-setup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 20;
+}
+
+.counter-setup-overlay.show {
+  display: flex;
+}
+
+.counter-setup-panel {
+  position: relative;
+  width: min(90vw, 460px);
+  background: #fffaf4;
+  border: 4px solid #111;
+  box-shadow: 8px 8px 0 #111;
+  padding: 24px;
+  text-align: center;
+}
   </style>
 </head>
 
 <body>
-
   <button class="instructions-button" onclick="openInstructions()">?</button>
 
   <div class="instructions-overlay" id="instructionsOverlay">
@@ -197,76 +401,133 @@
 
       <h2>How to use</h2>
 
-      <p>
-        Press Enter to move through the Italian bind-off loop.
-        The blue text shows the action you are currently doing.
-      </p>
+      <p><strong>Italian Bind-Off:</strong> Do the highlighted motion, then press Enter or tap Done.</p>
 
-      <p>
-        Loop order:
-        <strong>Knit Off → Purl On → Purl Off → Knit On</strong>
-      </p>
+      <p><strong>Row Counter:</strong> Set your current row and cap. Press Enter or tap Finished Row whenever you complete a row.</p>
 
-      <p>
-        Use Right/Down arrows to go forward, and Left/Up arrows to go backward.
-      </p>
+      <p>The action row turns red when you reach the cap.</p>
     </div>
   </div>
-  
+
   <main class="app">
-    <div class="bindoff-box">
-      <div class="pointer" id="pointer"></div>
-
-      <div class="row knit-row" id="knitRow">
-        <span class="label">Knits:</span>
-        <span class="step" id="knitOff">Knit Off</span>
-        <span class="slash">/</span>
-        <span class="step" id="purlOn">Purl On</span>
-      </div>
-
-      <div class="row purl-row" id="purlRow">
-        <span class="label">Purls:</span>
-        <span class="step" id="purlOff">Purl Off</span>
-        <span class="slash">/</span>
-        <span class="step" id="knitOn">Knit On</span>
-      </div>
+    <div class="tabs">
+      <button class="tab-button active" onclick="switchTab('bindoff')" id="bindoffTab">Italian Bind-Off</button>
+      <button class="tab-button" onclick="switchTab('counter')" id="counterTab">Row Counter</button>
     </div>
 
-  <div class="controls">
-  <button class="clear-button" onclick="clearLoop()">Clear</button>
-</div>
+    <section class="tool active" id="bindoffTool">
+      <div class="bindoff-box">
+        <div class="pointer" id="pointer"></div>
 
-<div class="hint">
-  Do the highlighted motion, then press <strong>Enter</strong> to mark it done.<br>
-  Press <strong>←</strong> if you need to go back.
-</div>
+        <div class="row knit-row" id="knitRow">
+          <span class="label">Knits:</span>
+          <span class="step" id="knitOff">Knit Off</span>
+          <span class="slash">/</span>
+          <span class="step" id="purlOn">Purl On</span>
+        </div>
 
-<div class="tiny">
-  Enter = done / next. Left arrow = back. Clear = all black.
-</div>
+        <div class="row purl-row" id="purlRow">
+          <span class="label">Purls:</span>
+          <span class="step" id="purlOff">Purl Off</span>
+          <span class="slash">/</span>
+          <span class="step" id="knitOn">Knit On</span>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="control-button" onclick="moveBack()">Back</button>
+        <button class="counter-button" onclick="moveForward()">Done</button>
+        <button class="clear-button" onclick="clearLoop()">Clear</button>
+      </div>
+
+      <div class="hint">
+        Do the highlighted motion, then press <strong>Enter</strong> to mark it done.
+      </div>
+
+      <div class="tiny">
+        Enter = done / next. Left arrow = back. Clear = all black.
+      </div>
+    </section>
+
+<section class="tool" id="counterTool">
+  <button class="setup-button" onclick="openCounterSetup()">⚙ Counter setup</button>
+
+  <div class="counter-card">
+    <div class="counter-title">Increase / Decrease Counter</div>
+
+    <div class="counter-display">
+      <div class="current-row" id="repeatRowBigDisplay">1</div>
+      <div class="row-label">Repeat Row</div>
+
+      <div class="repeat-row" id="currentRowSmallDisplay">Overall row: 1</div>
+      <div class="setup-summary" id="setupSummary">Decrease every 8 rows</div>
+
+      <div class="action-alert" id="actionAlert">Decrease Now</div>
+    </div>
+
+    <div class="controls">
+      <button class="control-button" onclick="counterBack()">Back</button>
+      <button class="counter-button" onclick="finishRow()">Finished Row</button>
+      <button class="clear-button" onclick="resetCounter()">Reset</button>
+    </div>
+
+    <div class="tiny">
+      Enter = finished row. The red alert means this is your action row.
+    </div>
+  </div>
+
+  <div class="counter-setup-overlay" id="counterSetupOverlay">
+    <div class="counter-setup-panel">
+      <button class="close-button" onclick="closeCounterSetup()">×</button>
+
+      <h2>Counter setup</h2>
+
+      <button class="action-toggle" onclick="toggleAction()" id="actionToggle">
+        Action: Decrease
+      </button>
+
+      <div class="settings">
+        <div class="field">
+          <label for="currentRowInput">Overall row</label>
+          <input type="number" id="currentRowInput" min="1" value="1" />
+        </div>
+
+        <div class="field">
+          <label for="capInput">Action every X rows</label>
+          <input type="number" id="capInput" min="1" value="8" />
+        </div>
+      </div>
+
+      <button class="apply-button" onclick="applyCounterSettings()">Save setup</button>
+    </div>
+  </div>
+    </section>
   </main>
 
   <script>
+    let activeTab = "bindoff";
+
+    function switchTab(tabName) {
+      activeTab = tabName;
+
+      document.getElementById("bindoffTool").classList.toggle("active", tabName === "bindoff");
+      document.getElementById("counterTool").classList.toggle("active", tabName === "counter");
+
+      document.getElementById("bindoffTab").classList.toggle("active", tabName === "bindoff");
+      document.getElementById("counterTab").classList.toggle("active", tabName === "counter");
+    }
+
     const steps = [
-      {
-        id: "knitOff",
-        row: "knitRow"
-      },
-      {
-        id: "purlOn",
-        row: "knitRow"
-      },
-      {
-        id: "purlOff",
-        row: "purlRow"
-      },
-      {
-        id: "knitOn",
-        row: "purlRow"
-      }
+      { id: "knitOff", row: "knitRow" },
+      { id: "purlOn", row: "knitRow" },
+      { id: "purlOff", row: "purlRow" },
+      { id: "knitOn", row: "purlRow" }
     ];
 
-    let currentStep = 0;
+    let currentStep = Number(localStorage.getItem("bindoffStep"));
+    if (Number.isNaN(currentStep)) {
+      currentStep = 0;
+    }
 
     const pointer = document.getElementById("pointer");
 
@@ -282,6 +543,7 @@
       clearActiveStep();
 
       if (currentStep === -1) {
+        localStorage.setItem("bindoffStep", currentStep);
         return;
       }
 
@@ -296,19 +558,29 @@
 
       pointer.style.top = rowMiddle + "px";
       pointer.classList.add("show");
+
+      localStorage.setItem("bindoffStep", currentStep);
     }
 
     function moveForward() {
-      currentStep++;
-
-      if (currentStep >= steps.length) {
+      if (currentStep === -1) {
         currentStep = 0;
+      } else {
+        currentStep++;
+
+        if (currentStep >= steps.length) {
+          currentStep = 0;
+        }
       }
 
       showStep();
     }
 
     function moveBack() {
+      if (currentStep === -1) {
+        return;
+      }
+
       currentStep--;
 
       if (currentStep < 0) {
@@ -319,38 +591,107 @@
     }
 
     function clearLoop() {
-  currentStep = -1;
-  showStep();
-}
-
-document.addEventListener("keydown", function(event) {
-  const overlay = document.getElementById("instructionsOverlay");
-  const instructionsAreOpen = overlay && overlay.classList.contains("show");
-
-  if (instructionsAreOpen) {
-    if (event.key === "Escape") {
-      closeInstructions();
+      currentStep = -1;
+      showStep();
     }
 
-    return;
-  }
+    let counterAction = localStorage.getItem("counterAction") || "Decrease";
+    let currentRow = Number(localStorage.getItem("currentRow")) || 1;
+    let repeatRow = Number(localStorage.getItem("repeatRow")) || 1;
+    let rowCap = Number(localStorage.getItem("rowCap")) || 8;
 
-if (event.key === "Enter") {
-  event.preventDefault();
+    function saveCounter() {
+      localStorage.setItem("counterAction", counterAction);
+      localStorage.setItem("currentRow", currentRow);
+      localStorage.setItem("repeatRow", repeatRow);
+      localStorage.setItem("rowCap", rowCap);
+    }
 
-  if (currentStep === -1) {
-    currentStep = 0;
-    showStep();
-  } else {
-    moveForward();
-  }
+    function renderCounter() {
+      document.getElementById("actionToggle").textContent = "Action: " + counterAction;
+      document.getElementById("currentRowInput").value = currentRow;
+      document.getElementById("capInput").value = rowCap;
+
+document.getElementById("repeatRowBigDisplay").textContent = repeatRow;
+document.getElementById("currentRowSmallDisplay").textContent = "Overall row: " + currentRow;
+document.getElementById("setupSummary").textContent = counterAction + " every " + rowCap + " rows";
+
+      const actionAlert = document.getElementById("actionAlert");
+      actionAlert.textContent = counterAction + " Now";
+
+      if (repeatRow === rowCap) {
+        actionAlert.classList.add("show");
+      } else {
+        actionAlert.classList.remove("show");
+      }
+
+      saveCounter();
+    }
+
+    function toggleAction() {
+      counterAction = counterAction === "Decrease" ? "Increase" : "Decrease";
+      renderCounter();
+    }
+
+    function applyCounterSettings() {
+      const newCurrentRow = Number(document.getElementById("currentRowInput").value);
+      const newCap = Number(document.getElementById("capInput").value);
+
+      if (newCurrentRow >= 1) {
+        currentRow = newCurrentRow;
+      }
+
+      if (newCap >= 1) {
+        rowCap = newCap;
+      }
+
+      if (repeatRow > rowCap) {
+        repeatRow = rowCap;
+      }
+
+renderCounter();
+closeCounterSetup();
+    }
+
+    function finishRow() {
+      currentRow++;
+
+      if (repeatRow >= rowCap) {
+        repeatRow = 1;
+      } else {
+        repeatRow++;
+      }
+
+      renderCounter();
+    }
+
+    function counterBack() {
+      if (currentRow > 1) {
+        currentRow--;
+      }
+
+      if (repeatRow <= 1) {
+        repeatRow = rowCap;
+      } else {
+        repeatRow--;
+      }
+
+      renderCounter();
+    }
+
+    function resetCounter() {
+      currentRow = 1;
+      repeatRow = 1;
+      renderCounter();
+    }
+
+    function openCounterSetup() {
+  document.getElementById("counterSetupOverlay").classList.add("show");
 }
-  if (event.key === "ArrowLeft") {
-    event.preventDefault();
-    moveBack();
-  }
-});
 
+function closeCounterSetup() {
+  document.getElementById("counterSetupOverlay").classList.remove("show");
+}
 
     const instructionsOverlay = document.getElementById("instructionsOverlay");
 
@@ -368,7 +709,50 @@ if (event.key === "Enter") {
       }
     });
 
+    document.getElementById("counterSetupOverlay").addEventListener("click", function(event) {
+  if (event.target === document.getElementById("counterSetupOverlay")) {
+    closeCounterSetup();
+  }
+});
+
+    document.addEventListener("keydown", function(event) {
+      const instructionsAreOpen = instructionsOverlay.classList.contains("show");
+
+      if (instructionsAreOpen) {
+        if (event.key === "Escape") {
+          closeInstructions();
+        }
+
+        return;
+      }
+
+      if (event.key === "Enter") {
+        event.preventDefault();
+
+        if (activeTab === "bindoff") {
+          moveForward();
+        }
+
+        if (activeTab === "counter") {
+          finishRow();
+        }
+      }
+
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+
+        if (activeTab === "bindoff") {
+          moveBack();
+        }
+
+        if (activeTab === "counter") {
+          counterBack();
+        }
+      }
+    });
+
     showStep();
+    renderCounter();
   </script>
 </body>
 </html>
