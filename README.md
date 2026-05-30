@@ -1,2 +1,2 @@
-# italian-bind-off-helper
-A little tool to help keep track of the steps in an italian bind off! 
+# knitting-helper
+A little toolbox to help keep track of methods in knitting! 
